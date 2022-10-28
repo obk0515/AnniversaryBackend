@@ -62,3 +62,4 @@ sshSftp方法：图片保存到服务器的/home/images目录下
 
 图片命名：微信用户openpid-图片种类-序号.jpg
 
+保存后可以通过访问：http://175.178.191.24/images/文件名.jpg获取图片
