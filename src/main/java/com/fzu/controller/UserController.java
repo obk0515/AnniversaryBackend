@@ -2,14 +2,13 @@ package com.fzu.controller;
 
 
 import com.alibaba.fastjson.JSON;
-import com.fzu.entity.Class;
 import com.fzu.entity.User;
-import com.fzu.entity.User_Class;
+import com.fzu.entity.UserClass;
 import com.fzu.mapper.UserMapper;
 import com.fzu.result.ServiceResult;
 import com.fzu.service.ClassService;
 import com.fzu.service.UserService;
-import com.fzu.service.User_ClassService;
+import com.fzu.service.UserClassService;
 import com.fzu.vo.UserAddVO;
 import com.fzu.vo.UserUpdateVO;
 import io.swagger.annotations.Api;
@@ -35,7 +34,7 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private User_ClassService user_classService;
+    private UserClassService user_classService;
 
     @ApiOperation(value = "初始创建")
     @PostMapping("/add")
@@ -77,7 +76,7 @@ public class UserController {
             return ServiceResult.createByErrorMessage("不存在此班级");
         }
         //获取U_C表里面对应学号信息
-        User_Class uc = user_classService.getBySid(userUpdateVO.getSid());
+        UserClass uc = user_classService.getBySid(userUpdateVO.getSid());
         //如果us表和user表的cid不等，则修改uc表对应信息
         if(uc.getCid() != classId){
             uc.setCid(classId);

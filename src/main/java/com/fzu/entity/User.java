@@ -22,11 +22,4 @@ public class User {
     @TableField("ban_flag")
     private String banFlag;
 
-    //class类数据
-    private String cid;
-    private String stage;
-    private String academy;
-    private String grage;
-    private String major;
-    private String class_no;
 }
