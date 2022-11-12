@@ -9,18 +9,19 @@ import java.io.OutputStream;
 public class Img2Base64Util {
     /**
      * 对字节数组字符串进行Base64解码并生成图片
-     * @param imgStr 图片数据
+     *
+     * @param imgStr      图片数据
      * @param imgFilePath 保存图片全路径地址
      * @return
      */
-    public static boolean generateImage(String imgStr, String imgFilePath){
-        if(imgStr == null) {
+    public static boolean generateImage(String imgStr, String imgFilePath) {
+        if (imgStr == null) {
             return false;
         }
         try {
             byte[] b = Base64.decodeBase64(imgStr);
-            for(int i = 0; i < b.length; i++) {
-                if(b[i] < 0) {
+            for (int i = 0; i < b.length; i++) {
+                if (b[i] < 0) {
                     b[i] += 256;
                 }
             }

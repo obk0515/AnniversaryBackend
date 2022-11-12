@@ -1,7 +1,6 @@
 package com.fzu.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fzu.entity.Class;
 import com.fzu.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

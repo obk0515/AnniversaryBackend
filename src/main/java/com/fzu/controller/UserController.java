@@ -7,13 +7,11 @@ import com.fzu.entity.UserClass;
 import com.fzu.mapper.UserMapper;
 import com.fzu.result.ServiceResult;
 import com.fzu.service.ClassService;
-import com.fzu.service.UserService;
 import com.fzu.service.UserClassService;
+import com.fzu.service.UserService;
 import com.fzu.vo.UserAddVO;
 import com.fzu.vo.UserUpdateVO;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +19,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/user")
-@Api(value = "UserController",tags = "个人资料")
+@Api(value = "UserController", tags = "个人资料")
 public class UserController {
 
     @Autowired
@@ -34,13 +34,10 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private UserClassService user_classService;
+    private UserClassService userClassService;
 
     @ApiOperation(value = "初始创建")
     @PostMapping("/add")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "访问token", paramType = "header", dataType = "string", required = true)
-    })
     public ServiceResult<User> addUser(@Validated @RequestBody UserAddVO userAddVO, BindingResult bindingResult) {
         //参数验证
         if (bindingResult.hasErrors()) {
@@ -60,14 +57,14 @@ public class UserController {
 
     //个人资料模块展示，通过id查询，，，
     @GetMapping("/data/{id}")
-    public ServiceResult<User> getById(@PathVariable String id){
+    public ServiceResult<User> getById(@PathVariable String id) {
 
         return ServiceResult.createBySuccessList(userMapper.getById(id));
     }
 
     //保存个人信息
     @PostMapping("/save/{id}")
-    public ServiceResult<User> updateById(@RequestBody UserUpdateVO userUpdateVO,@PathVariable String id){
+    public ServiceResult<User> updateById(@RequestBody UserUpdateVO userUpdateVO, @PathVariable String id) {
         //获取与之对应的用户信息
         User user = userService.getById(id);
         //获取与之对应的班级信息，是否存在此班级
@@ -76,9 +73,9 @@ public class UserController {
             return ServiceResult.createByErrorMessage("不存在此班级");
         }
         //获取U_C表里面对应学号信息
-        UserClass uc = user_classService.getBySid(userUpdateVO.getSid());
+        UserClass uc = userClassService.getBySid(userUpdateVO.getSid());
         //如果us表和user表的cid不等，则修改uc表对应信息
-        if(uc.getCid() != classId){
+        if (!Objects.equals(uc.getCid(), classId)) {
             uc.setCid(classId);
         }
         //修改user表对应信息
@@ -88,12 +85,5 @@ public class UserController {
 
         return ServiceResult.createBySuccess(user);
     }
-
-    //意见反馈
-//    @PostMapping("/idea")
-//    public ServiceResult setIdea(@RequestBody String idea){
-//        return ServiceResult();
-//    }
-
 
 }

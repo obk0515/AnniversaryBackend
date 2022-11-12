@@ -9,5 +9,6 @@ import com.fzu.vo.UserClassPageVO;
 public interface UserClassService extends IService<UserClass> {
 
     UserClass getBySid(String sid);
+
     public Page<User> findPage(Page<User> page, UserClassPageVO pageVO);
 }

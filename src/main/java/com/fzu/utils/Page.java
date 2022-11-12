@@ -71,8 +71,8 @@ public class Page<T> implements Serializable {
 
     public void initialize() {
         this.first = 1;
-        this.last = (int)(this.count / (long)(this.pageSize < 1 ? 20 : this.pageSize) + (long)this.first - 1L);
-        if (this.count % (long)this.pageSize != 0L || this.last == 0) {
+        this.last = (int) (this.count / (long) (this.pageSize < 1 ? 20 : this.pageSize) + (long) this.first - 1L);
+        if (this.count % (long) this.pageSize != 0L || this.last == 0) {
             ++this.last;
         }
 
@@ -139,7 +139,7 @@ public class Page<T> implements Serializable {
         if (begin > this.first) {
 //            int i = false;
 
-            for(i = this.first; i < this.first + this.slider && i < begin; ++i) {
+            for (i = this.first; i < this.first + this.slider && i < begin; ++i) {
                 sb.append("<li><a href=\"javascript:\" onclick=\"" + this.funcName + "(" + i + "," + this.pageSize + ",'" + this.funcParam + "');\">" + (i + 1 - this.first) + "</a></li>\n");
             }
 
@@ -148,7 +148,7 @@ public class Page<T> implements Serializable {
             }
         }
 
-        for(i = begin; i <= end; ++i) {
+        for (i = begin; i <= end; ++i) {
             if (i == this.pageNo) {
                 sb.append("<li class=\"active\"><a href=\"javascript:\">" + (i + 1 - this.first) + "</a></li>\n");
             } else {
@@ -161,7 +161,7 @@ public class Page<T> implements Serializable {
             end = this.last - this.slider;
         }
 
-        for(i = end + 1; i <= this.last; ++i) {
+        for (i = end + 1; i <= this.last; ++i) {
             sb.append("<li><a href=\"javascript:\" onclick=\"" + this.funcName + "(" + i + "," + this.pageSize + ",'" + this.funcParam + "');\">" + (i + 1 - this.first) + "</a></li>\n");
         }
 
@@ -192,7 +192,7 @@ public class Page<T> implements Serializable {
 
     public void setCount(long count) {
         this.count = count;
-        if ((long)this.pageSize >= count) {
+        if ((long) this.pageSize >= count) {
             this.pageNo = 1;
         }
 
@@ -292,7 +292,7 @@ public class Page<T> implements Serializable {
 
     public int getFirstResult() {
         int firstResult = (this.getPageNo() - 1) * this.getPageSize();
-        if ((long)firstResult >= this.getCount()) {
+        if ((long) firstResult >= this.getCount()) {
             firstResult = 0;
         }
 

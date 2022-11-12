@@ -10,7 +10,6 @@ import com.fzu.service.UserClassService;
 import com.fzu.service.UserService;
 import com.fzu.utils.Page;
 import com.fzu.vo.UserClassPageVO;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +25,14 @@ public class UserClassImpl extends ServiceImpl<UserClassMapper, UserClass> imple
     @Override
     public UserClass getBySid(String sid) {
         QueryWrapper<UserClass> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("sid",sid);
+        queryWrapper.eq("sid", sid);
         return this.getOne(queryWrapper);
     }
 
 
     /**
      * 查找同班同学
+     *
      * @param page
      * @param pageVO
      * @return
@@ -40,7 +40,7 @@ public class UserClassImpl extends ServiceImpl<UserClassMapper, UserClass> imple
     @Override
     public Page<User> findPage(Page<User> page, UserClassPageVO pageVO) {
         LambdaQueryWrapper<UserClass> userClassQueryWrapper = new LambdaQueryWrapper<>();
-        if(pageVO.getCid() == null) {
+        if (pageVO.getCid() == null) {
             return page; //未接收到班级信息，返回一个空page
         }
         String cid = pageVO.getCid();
@@ -57,7 +57,7 @@ public class UserClassImpl extends ServiceImpl<UserClassMapper, UserClass> imple
         page.setCount(userslist.size()); //设置页面总数
         page.setPageSize(pageVO.getPageSize());//第几页
         long firstResult = (long) (page.getPageNo() - 1) * page.getPageSize();
-        if(firstResult >= page.getCount()){
+        if (firstResult >= page.getCount()) {
             return page; //返回一个空page;
         }
         page.setPageNo(page.getFirstResult());

@@ -4,7 +4,6 @@ import com.fzu.entity.Bless;
 import com.fzu.entity.User;
 import com.fzu.result.ServiceResult;
 import com.fzu.service.BlessService;
-//import com.fzu.utils.Results;
 import com.fzu.service.UserService;
 import com.fzu.utils.Page;
 import com.fzu.vo.BlessPageVo;
@@ -18,7 +17,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/bless")
-@Api(value = "BlessController",tags = "云祝福")
+@Api(value = "BlessController", tags = "云祝福")
 public class BlessController {
 
     @Autowired
@@ -29,19 +28,19 @@ public class BlessController {
 
     //获取祝福语
     @PostMapping
-    public ServiceResult<Bless> selectPage(@RequestBody @ApiParam(value = "BlessPageVo") BlessPageVo pageVO,BindingResult bindingResult) {
+    public ServiceResult<Bless> selectPage(@RequestBody @ApiParam(value = "BlessPageVo") BlessPageVo pageVO, BindingResult bindingResult) {
         //参数验证
         if (bindingResult.hasErrors()) {
             return ServiceResult.createByErrorMessage(String.valueOf(bindingResult.getFieldErrors()));
         }
         Page<Bless> page = new Page<>(pageVO.getPageNo(), pageVO.getPageSize());
         Page<Bless> returnPage = blessService.findPage(page, pageVO);
-        return ServiceResult.createBySuccess(returnPage.getList(), Math.toIntExact  (returnPage.getCount()));
+        return ServiceResult.createBySuccess(returnPage.getList(), Math.toIntExact(returnPage.getCount()));
     }
 
     //写入祝福语
     @PostMapping("/save/{id}}")
-    public ServiceResult<Bless> saveBless(@RequestBody String blessing, @PathVariable String id){
+    public ServiceResult<Bless> saveBless(@RequestBody String blessing, @PathVariable String id) {
         //通过User获得创建者名字
         User user = userService.getById(id);
         Bless bless = new Bless();

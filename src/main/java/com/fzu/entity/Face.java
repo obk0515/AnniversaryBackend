@@ -1,7 +1,6 @@
 package com.fzu.entity;
 
 import com.baidu.aip.bodyanalysis.AipBodyAnalysis;
-import com.fzu.utils.Img2Base64Util;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -22,12 +21,12 @@ public class Face {
         return res.get("foreground").toString();
     }
 
-    void Cut_Face() {
-        AipBodyAnalysis c = new AipBodyAnalysis(Face.APP_ID, Face.API_KEY, Face.SECRET_KEY);
-        String sam = Face.Face(c);
-        System.out.println(sam);
-        Img2Base64Util img2Base64Util = new Img2Base64Util();
-        img2Base64Util.generateImage(sam, "C:\\Users\\何帆\\IdeaProjects\\SpringBoot\\ruangong\\src\\main\\java\\com\\fzu\\face\\image\\2.png");
-    }
+//    void Cut_Face() {
+//        AipBodyAnalysis c = new AipBodyAnalysis(Face.APP_ID, Face.API_KEY, Face.SECRET_KEY);
+//        String sam = Face.Face(c);
+//        System.out.println(sam);
+//        Img2Base64Util img2Base64Util = new Img2Base64Util();
+//        img2Base64Util.generateImage(sam, "C:\\Users\\何帆\\IdeaProjects\\SpringBoot\\ruangong\\src\\main\\java\\com\\fzu\\face\\image\\2.png");
+//    }
 
 }

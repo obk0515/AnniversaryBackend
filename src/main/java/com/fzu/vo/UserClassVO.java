@@ -8,13 +8,16 @@ import lombok.Data;
 @ApiModel(value = "UserClassVO", description = "UserClassVO")
 public class UserClassVO {
     @ApiModelProperty(value = "用户id", name = "Uid", example = "2")
-    private String Uid;
+    private String uid;
 
     @ApiModelProperty(value = "学生学号", name = "Sid", example = "032002509")
-    private String Sid;
+    private String sid;
 
     @ApiModelProperty(value = "学历", name = "stage", example = "本科")
     private String stage;
+
+    @ApiModelProperty(value = "学院", name = "academy", example = "计算机与大数据学院")
+    private String academy;
 
     @ApiModelProperty(value = "专业", name = "major", example = "计算机类")
     private String major;
@@ -23,9 +26,8 @@ public class UserClassVO {
     private String grade;
 
     @ApiModelProperty(value = "班级", name = "class_no", example = "1")
-    private String class_no;
+    private String classNo;
 
     @ApiModelProperty(value = "班级id", name = "cid", example = "112233")
-    private String Cid;
-
+    private String cid;
 }

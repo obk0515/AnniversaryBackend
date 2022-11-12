@@ -33,7 +33,7 @@ public class ClassImpl extends ServiceImpl<ClassMapper, Class> implements ClassS
     @Override
     public Class getByCid(String cid) {
         QueryWrapper<Class> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("cid",cid);
+        queryWrapper.eq("cid", cid);
         return this.getOne(queryWrapper);
     }
 

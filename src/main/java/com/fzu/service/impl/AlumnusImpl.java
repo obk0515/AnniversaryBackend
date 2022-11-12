@@ -11,12 +11,12 @@ import java.util.List;
 
 @Service
 public class AlumnusImpl extends com.baomidou.mybatisplus.extension.service.impl.ServiceImpl<AlumnusMapper, Alumnus>
-implements AlumnusService {
+        implements AlumnusService {
 
     @Override
     public Alumnus getById(String id) {
         QueryWrapper<Alumnus> wrapper = new QueryWrapper<>();
-        wrapper.eq("id",id);
+        wrapper.eq("id", id);
         return this.getOne(wrapper);
     }
 

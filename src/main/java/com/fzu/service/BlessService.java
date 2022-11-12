@@ -9,5 +9,6 @@ import com.fzu.vo.BlessPageVo;
 public interface BlessService extends IService<Bless> {
 
     Page<Bless> findPage(Page<Bless> page, BlessPageVo pageVO);
+
     User getById(String id);
 }

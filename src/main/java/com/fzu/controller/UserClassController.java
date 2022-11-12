@@ -31,6 +31,7 @@ public class UserClassController {
 
     /**
      * 加入班级
+     *
      * @param userClassVO
      * @return
      */
@@ -41,42 +42,38 @@ public class UserClassController {
         UserClass userClass = new UserClass();
         // 找到班级
         LambdaQueryWrapper<Class> classQueryWrapper = new LambdaQueryWrapper<>();
-        if(userClassVO.getGrade() != null) {
-            log.info(userClassVO.getGrade());
-            classQueryWrapper.eq(Class::getGrade, userClassVO.getGrade()); //根据年级查找
+        if (userClassVO.getAcademy() != null &&
+                userClassVO.getStage() != null &&
+                userClassVO.getGrade() != null &&
+                userClassVO.getMajor() != null &&
+                userClassVO.getClassNo() != null) {
+            //根据年级查找
+            classQueryWrapper.eq(Class::getAcademy, userClassVO.getAcademy());
+            classQueryWrapper.eq(Class::getStage, userClassVO.getStage());
+            classQueryWrapper.eq(Class::getGrade, userClassVO.getGrade());
+            classQueryWrapper.eq(Class::getMajor, userClassVO.getMajor());
+            classQueryWrapper.eq(Class::getClassNo, userClassVO.getClassNo());
+        } else {
+            log.info("班级不存在");
+            return ServiceResult.createByErrorMessage("班级不存在");
         }
-        if(userClassVO.getMajor() != null) {
-            log.info(userClassVO.getMajor());
-            classQueryWrapper.eq(Class::getMajor, userClassVO.getMajor()); //根据专业查找班级
-        }
-
-        if(classQueryWrapper == null) {
-            log.info("为查询到班级");
-            return ServiceResult.createByErrorMessage("未查询到message");
-        }
-
-        if(userClassVO.getClass_no() != null) {
-            classQueryWrapper.eq(Class::getClassNo, userClassVO.getClass_no());
-        }
-
-        Class cclass = classService.getOne(classQueryWrapper); //获取所在班级
-
-        if(cclass == null) {
+        //获取所在班级
+        Class cclass = classService.getOne(classQueryWrapper);
+        if (cclass == null) {
             log.info("未查询到班级");
             return ServiceResult.createByErrorMessage("未查询到班级");
         }
-
         //在学生-班级表存储
         userClass.setUid(userClassVO.getUid());
         userClass.setSid(userClassVO.getSid());
         userClass.setCid(cclass.getCid());
         userClassService.save(userClass);
-
         return ServiceResult.createBySuccess(cclass);
     }
 
     /**
      * 退出班级
+     *
      * @param userClassVO
      * @return
      */
@@ -86,16 +83,13 @@ public class UserClassController {
         LambdaQueryWrapper<UserClass> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserClass::getCid, userClassVO.getCid());
         queryWrapper.eq(UserClass::getUid, userClassVO.getUid());
-        if(queryWrapper == null) {
-            return ServiceResult.createByErrorMessage("删除失败");
-        }
         userClassService.remove(queryWrapper);
         return ServiceResult.createBySuccessMessage("删除成功");
     }
 
     @ApiOperation(value = "查看同学")
     @PostMapping("/page")
-    public ServiceResult<User> QueryClassmate(@RequestBody @ApiParam(value = "UserClassPageVO") UserClassPageVO pageVO){
+    public ServiceResult<User> QueryClassmate(@RequestBody @ApiParam(value = "UserClassPageVO") UserClassPageVO pageVO) {
         Page<User> page = new Page<>(pageVO.getPageNo(), pageVO.getPageSize());
         Page<User> returnPage = userClassService.findPage(page, pageVO);
         return ServiceResult.createBySuccess(returnPage.getList(), Math.toIntExact(returnPage.getCount()));
