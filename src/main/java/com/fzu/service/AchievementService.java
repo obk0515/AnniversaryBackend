@@ -11,5 +11,4 @@ public interface AchievementService extends IService<Achievement> {
 
     List<Achievement> list(Achievement achievement);
 
-    Achievement getType(String type);
 }

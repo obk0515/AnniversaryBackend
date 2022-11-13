@@ -1,20 +1,15 @@
 package com.fzu.controller;
 
 
-import com.alibaba.fastjson.JSON;
-import com.fzu.entity.Class;
 import com.fzu.entity.User;
-import com.fzu.entity.User_Class;
 import com.fzu.mapper.UserMapper;
 import com.fzu.result.ServiceResult;
 import com.fzu.service.ClassService;
+import com.fzu.service.UserClassService;
 import com.fzu.service.UserService;
-import com.fzu.service.User_ClassService;
 import com.fzu.vo.UserAddVO;
 import com.fzu.vo.UserUpdateVO;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
-@Api(value = "UserController",tags = "个人资料")
+@Api(value = "UserController", tags = "个人资料")
 public class UserController {
 
     @Autowired
@@ -35,13 +30,10 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private User_ClassService user_classService;
+    private UserClassService userClassService;
 
     @ApiOperation(value = "初始创建")
     @PostMapping("/add")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "访问token", paramType = "header", dataType = "string", required = true)
-    })
     public ServiceResult<User> addUser(@Validated @RequestBody UserAddVO userAddVO, BindingResult bindingResult) {
         //参数验证
         if (bindingResult.hasErrors()) {
@@ -61,40 +53,29 @@ public class UserController {
 
     //个人资料模块展示，通过id查询，，，
     @GetMapping("/data/{id}")
-    public ServiceResult<User> getById(@PathVariable String id){
-
-        return ServiceResult.createBySuccessList(userMapper.getById(id));
+    public ServiceResult<User> getById(@PathVariable String id) {
+        //失败
+        if (userService.getById(id) == null) {
+            return ServiceResult.createByErrorMessage("没有此用户");
+        }
+        return ServiceResult.createBySuccess(userService.getById(id));
     }
 
     //保存个人信息
-    @PostMapping("/save/{id}")
-    public ServiceResult<User> updateById(@RequestBody UserUpdateVO userUpdateVO,@PathVariable String id){
+    @PostMapping("/save")
+    public ServiceResult<User> updateById(@RequestBody UserUpdateVO userUpdateVO) {
+        if (userService.getById(userUpdateVO.getId()) == null) {
+            return ServiceResult.createByErrorMessage("没有此用户");
+        }
         //获取与之对应的用户信息
-        User user = userService.getById(id);
-        //获取与之对应的班级信息，是否存在此班级
-        String classId = classService.getClassId(JSON.parseObject(userUpdateVO.getClassDetail()));
-        if (classId == null) {
-            return ServiceResult.createByErrorMessage("不存在此班级");
-        }
-        //获取U_C表里面对应学号信息
-        User_Class uc = user_classService.getBySid(userUpdateVO.getSid());
-        //如果us表和user表的cid不等，则修改uc表对应信息
-        if(uc.getCid() != classId){
-            uc.setCid(classId);
-        }
+        User user = new User();
+        //直接复制数据
+        BeanUtils.copyProperties(userUpdateVO, user);
         //修改user表对应信息
         if (!userService.updateById(user)) {
             return ServiceResult.createByErrorMessage("修改失败");
         }
-
         return ServiceResult.createBySuccess(user);
     }
-
-    //意见反馈
-//    @PostMapping("/idea")
-//    public ServiceResult setIdea(@RequestBody String idea){
-//        return ServiceResult();
-//    }
-
 
 }

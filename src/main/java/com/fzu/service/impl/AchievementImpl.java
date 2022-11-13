@@ -20,7 +20,7 @@ public class AchievementImpl extends ServiceImpl<AchievementMapper, Achievement>
     @Override
     public List<Achievement> getByType(String type) {
         QueryWrapper<Achievement> wrapper = new QueryWrapper<>();
-        wrapper.eq("type",type);
+        wrapper.eq("type", type);
         return achievementMapper.selectList(wrapper);
     }
 
@@ -29,10 +29,4 @@ public class AchievementImpl extends ServiceImpl<AchievementMapper, Achievement>
         return list(Wrappers.lambdaQuery(achievement));
     }
 
-    @Override
-    public Achievement getType(String type){
-        QueryWrapper<Achievement> wrapper = new QueryWrapper<>();
-        wrapper.eq("type",type);
-        return this.getOne(wrapper);
-    }
 }

@@ -1,19 +1,19 @@
 server:
-  port: 80
+  port: 8081
 
 spring:
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://43.139.44.**:3306/ruangong?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=utf8
+      url: jdbc:mysql://43.139.44.**:3306/ruangong?serverTimezone=GMT%2b8&characterEncoding=utf-8
       username: root
-      password: *****
+      password: ***
   devtools:
     livereload:
       enabled: true
   redis:
     host: 43.139.44.**
-    password: *****
+    password: ***
     port: 6379
     database: 3
 wechat:

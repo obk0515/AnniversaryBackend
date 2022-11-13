@@ -64,7 +64,7 @@ public class MsgCodeUtils {
     }
 
     public static String getErrMsg(int msgCode) {
-        return (String)map.get(msgCode);
+        return (String) map.get(msgCode);
     }
 
     static {

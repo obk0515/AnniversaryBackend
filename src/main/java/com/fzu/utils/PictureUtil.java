@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.OutputStream;
+
 @Component
 public class PictureUtil {
     @Value("${esc.username}")
@@ -25,21 +26,22 @@ public class PictureUtil {
 
     /**
      * 利用JSch包实现SFTP上传文件
-     * @param bytes  文件字节流
-     * @param fileName  文件名
+     *
+     * @param bytes    文件字节流
+     * @param fileName 文件名
      * @throws Exception
      */
-    public void sshSftp(byte[] bytes,String fileName) throws Exception{
+    public void sshSftp(byte[] bytes, String fileName) throws Exception {
         int port = 22;
         Session session = null;
         Channel channel = null;
         JSch jSch = new JSch();
-        if(port <=0){
+        if (port <= 0) {
             //连接服务器，采用默认端口
             session = jSch.getSession(username, ip);
-        }else{
+        } else {
             //采用指定的端口连接服务器
-            session = jSch.getSession(username, ip ,port);
+            session = jSch.getSession(username, ip, port);
         }
         //如果服务器连接不上，则抛出异常
         if (session == null) {
@@ -48,7 +50,7 @@ public class PictureUtil {
         //设置登陆主机的密码
         session.setPassword(password);//设置密码
         //设置第一次登陆的时候提示，可选值：(ask | yes | no)
-        session.setConfig("userauth.gssapi-with-mic","no");
+        session.setConfig("userauth.gssapi-with-mic", "no");
         session.setConfig("StrictHostKeyChecking", "no");
         //设置登陆超时时间
         session.connect(30000);

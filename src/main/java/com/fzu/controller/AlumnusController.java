@@ -4,13 +4,12 @@ import com.fzu.entity.Alumnus;
 import com.fzu.result.ServiceResult;
 import com.fzu.service.AlumnusService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("alumnus")
-@Api(value = "AchievementController",tags = "校友风采")
+@Api(value = "AchievementController", tags = "校友风采")
 public class AlumnusController {
 
     @Autowired
@@ -18,14 +17,14 @@ public class AlumnusController {
 
     //获取全部校友信息
     @GetMapping
-    public ServiceResult getAll(){
+    public ServiceResult getAll() {
         return ServiceResult.createBySuccessList(alumnusService.list());
     }
 
     //按照ID获取校友信息
     @PostMapping("/{id}")
-    public ServiceResult<Alumnus> getById(@PathVariable String id){
-        if(alumnusService.getById(id)==null){
+    public ServiceResult<Alumnus> getById(@PathVariable String id) {
+        if (alumnusService.getById(id) == null) {
             return ServiceResult.createByErrorMessage("不存在该校友信息");
         }
         Alumnus alumnus = alumnusService.getById(id);
