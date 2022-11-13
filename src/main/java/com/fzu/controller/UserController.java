@@ -72,8 +72,15 @@ public class UserController {
         if (classId == null) {
             return ServiceResult.createByErrorMessage("不存在此班级");
         }
-        //获取U_C表里面对应学号信息
+        //通过Sid获取对应的uc表
         UserClass uc = userClassService.getBySid(userUpdateVO.getSid());
+        //如果uc表没有对应的行,则创建并保存
+        if( uc == null ){
+            UserClass userClass = new UserClass();
+            userClass.setCid(classId);
+            userClass.setSid(userUpdateVO.getSid());
+            userClassService.save(userClass);
+        }
         //如果us表和user表的cid不等，则修改uc表对应信息
         if (!Objects.equals(uc.getCid(), classId)) {
             uc.setCid(classId);
@@ -82,7 +89,6 @@ public class UserController {
         if (!userService.updateById(user)) {
             return ServiceResult.createByErrorMessage("修改失败");
         }
-
         return ServiceResult.createBySuccess(user);
     }
 
