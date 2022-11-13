@@ -32,12 +32,5 @@ public class UserUpdateVO {
     @ApiModelProperty(value = "毕业时间", example = "2018-07-01")
     private Date graduationTime;
 
-    @ApiModelProperty(value = "所属班级号", example = "112233")
-    private String cid;
 
-    @ApiModelProperty(value = "禁用标志", example = "0")
-    private String banFlag;
-
-    @ApiModelProperty(value = "", example = "\"{\"academy\": \"计算机与大数据学院\",\"grade\": \"2020\",\"major\": \"计算机类\",\"class_no\": 2}\"")
-    private String classDetail;
 }

@@ -11,7 +11,4 @@ import java.util.List;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
-    //联合查询语句
-    @Select("select * from user,class,user_class where user_class.cid=class.cid and user_class.sid=user.sid and user.id= #{id}")
-    List<User> getById(@Param("id") String id);
 }

@@ -1,5 +1,6 @@
 package com.fzu.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fzu.entity.Program;
 import com.fzu.result.ServiceResult;
 import com.fzu.service.ProgramService;
@@ -20,7 +21,10 @@ public class ProgramController {
     //获取活动清单
     @GetMapping
     public ServiceResult<Program> getAll() {
-        return ServiceResult.createBySuccessList(programService.list());
+        QueryWrapper<Program> queryWrapper = new QueryWrapper<>();
+        //按照优先级排序
+        queryWrapper.orderByDesc("priority");
+        return ServiceResult.createBySuccessList(programService.list(queryWrapper));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.fzu.controller;
 
 import com.fzu.entity.Achievement;
+import com.fzu.result.ServiceResult;
 import com.fzu.service.AchievementService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,12 +26,12 @@ public class AchievementController {
     //按照type来查询
     @GetMapping("/{type}")
     @ApiOperation(value = "getByType")
-    public List<Achievement> getByType(@PathVariable String type) {
+    public ServiceResult<Achievement> getByType(@PathVariable String type) {
         List<Achievement> achievement = achievementService.getByType(type);
-
-        Achievement achievement1 = achievementService.getType(type);
-
-        return achievementService.list(achievement1);
+        if(achievement==null){
+            return ServiceResult.createByErrorMessage("没有找到该类型");
+        }
+        return ServiceResult.createBySuccess(achievement,achievement.size());
     }
 
 }

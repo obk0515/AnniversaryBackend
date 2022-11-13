@@ -58,33 +58,23 @@ public class UserController {
     //个人资料模块展示，通过id查询，，，
     @GetMapping("/data/{id}")
     public ServiceResult<User> getById(@PathVariable String id) {
-
-        return ServiceResult.createBySuccessList(userMapper.getById(id));
+        //失败
+        if(userService.getById(id)==null){
+            return ServiceResult.createByErrorMessage("没有此用户");
+        }
+        return ServiceResult.createBySuccess(userService.getById(id));
     }
 
     //保存个人信息
-    @PostMapping("/save/{id}")
-    public ServiceResult<User> updateById(@RequestBody UserUpdateVO userUpdateVO, @PathVariable String id) {
+    @PostMapping("/save")
+    public ServiceResult<User> updateById(@RequestBody UserUpdateVO userUpdateVO) {
+        if (userService.getById(userUpdateVO.getId())==null){
+            return ServiceResult.createByErrorMessage("没有此用户");
+        }
         //获取与之对应的用户信息
-        User user = userService.getById(id);
-        //获取与之对应的班级信息，是否存在此班级
-        String classId = classService.getClassId(JSON.parseObject(userUpdateVO.getClassDetail()));
-        if (classId == null) {
-            return ServiceResult.createByErrorMessage("不存在此班级");
-        }
-        //通过Sid获取对应的uc表
-        UserClass uc = userClassService.getBySid(userUpdateVO.getSid());
-        //如果uc表没有对应的行,则创建并保存
-        if( uc == null ){
-            UserClass userClass = new UserClass();
-            userClass.setCid(classId);
-            userClass.setSid(userUpdateVO.getSid());
-            userClassService.save(userClass);
-        }
-        //如果us表和user表的cid不等，则修改uc表对应信息
-        if (!Objects.equals(uc.getCid(), classId)) {
-            uc.setCid(classId);
-        }
+        User user = new User();
+        //直接复制数据
+        BeanUtils.copyProperties(userUpdateVO,user);
         //修改user表对应信息
         if (!userService.updateById(user)) {
             return ServiceResult.createByErrorMessage("修改失败");

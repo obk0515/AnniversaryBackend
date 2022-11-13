@@ -43,6 +43,10 @@ public class BlessController {
     public ServiceResult<Bless> saveBless(@RequestBody String blessing, @PathVariable String id) {
         //通过User获得创建者名字
         User user = userService.getById(id);
+        //失败的
+        if(user==null){
+            return ServiceResult.createByErrorMessage("没有此用户");
+        }
         Bless bless = new Bless();
         bless.setBless(blessing);
         bless.setStatus("0");
