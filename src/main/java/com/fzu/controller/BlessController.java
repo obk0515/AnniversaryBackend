@@ -44,7 +44,7 @@ public class BlessController {
         //通过User获得创建者名字
         User user = userService.getById(id);
         //失败的
-        if(user==null){
+        if (user == null) {
             return ServiceResult.createByErrorMessage("没有此用户");
         }
         Bless bless = new Bless();

@@ -1,6 +1,7 @@
 package com.fzu.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fzu.entity.Class;
 import com.fzu.entity.User;
 import com.fzu.entity.UserClass;
@@ -17,6 +18,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -89,9 +95,133 @@ public class UserClassController {
 
     @ApiOperation(value = "查看同学")
     @PostMapping("/page")
-    public ServiceResult<User> QueryClassmate(@RequestBody @ApiParam(value = "UserClassPageVO") UserClassPageVO pageVO) {
+    public ServiceResult<User> queryClassmate(@RequestBody @ApiParam(value = "UserClassPageVO") UserClassPageVO pageVO) {
         Page<User> page = new Page<>(pageVO.getPageNo(), pageVO.getPageSize());
         Page<User> returnPage = userClassService.findPage(page, pageVO);
         return ServiceResult.createBySuccess(returnPage.getList(), Math.toIntExact(returnPage.getCount()));
+    }
+
+    /**
+     * 获取学历列表
+     *
+     * @return
+     */
+    @ApiOperation(value = "获取学历列表")
+    @PostMapping("/getStage")
+    public ServiceResult<String> getStage() {
+        List<Class> list = classService.list();
+        Set<String> set = new HashSet<>();
+        for (Class aClass : list) {
+            set.add(aClass.getStage());
+        }
+        List<String> stageList = new ArrayList<>(set);
+        return ServiceResult.createBySuccess(stageList, stageList.size());
+    }
+
+
+    /**
+     * 获取年级列表
+     *
+     * @param stage
+     * @return
+     */
+    @ApiOperation(value = "获取年级列表")
+    @PostMapping("/getGrade/{stage}")
+    public ServiceResult<String> getGrade(@PathVariable String stage) {
+        QueryWrapper<Class> wrapper = new QueryWrapper<>();
+        wrapper.eq("stage", stage);
+        wrapper.orderByAsc("grade");
+        List<Class> list = classService.list(wrapper);
+        Set<String> set = new HashSet<>();
+        for (Class aClass : list) {
+            set.add(aClass.getGrade());
+        }
+        List<String> gradeList = new ArrayList<>(set);
+        return ServiceResult.createBySuccess(gradeList, gradeList.size());
+    }
+
+    /**
+     * 获取学院列表
+     *
+     * @param stage
+     * @param grade
+     * @return
+     */
+    @ApiOperation(value = "获取学院列表")
+    @PostMapping("/getAcademy")
+    public ServiceResult<String> getAcademy(
+            @ApiParam @RequestParam String stage,
+            @ApiParam @RequestParam String grade
+    ) {
+        QueryWrapper<Class> wrapper = new QueryWrapper<>();
+        wrapper.eq("stage", stage);
+        wrapper.eq("grade", grade);
+        List<Class> list = classService.list(wrapper);
+        Set<String> set = new HashSet<>();
+        for (Class aClass : list) {
+            set.add(aClass.getAcademy());
+        }
+        List<String> academyList = new ArrayList<>(set);
+        return ServiceResult.createBySuccess(academyList, academyList.size());
+    }
+
+    /**
+     * 获取专业列表
+     *
+     * @param stage
+     * @param grade
+     * @param academy
+     * @return
+     */
+    @ApiOperation(value = "获取专业列表")
+    @PostMapping("/getMajor")
+    public ServiceResult<String> getMajor(
+            @ApiParam @RequestParam String stage,
+            @ApiParam @RequestParam String grade,
+            @ApiParam @RequestParam String academy
+    ) {
+        QueryWrapper<Class> wrapper = new QueryWrapper<>();
+        wrapper.eq("stage", stage);
+        wrapper.eq("grade", grade);
+        wrapper.eq("academy", academy);
+        List<Class> list = classService.list(wrapper);
+        Set<String> set = new HashSet<>();
+        for (Class aClass : list) {
+            set.add(aClass.getMajor());
+        }
+        List<String> gradeList = new ArrayList<>(set);
+        return ServiceResult.createBySuccess(gradeList, gradeList.size());
+    }
+
+    /**
+     * 获取班级列表
+     *
+     * @param stage
+     * @param grade
+     * @param academy
+     * @param major
+     * @return
+     */
+    @ApiOperation(value = "获取班级列表")
+    @PostMapping("/getClassNo")
+    public ServiceResult<Integer> getClassNo(
+            @ApiParam @RequestParam String stage,
+            @ApiParam @RequestParam String grade,
+            @ApiParam @RequestParam String academy,
+            @ApiParam @RequestParam String major
+    ) {
+        QueryWrapper<Class> wrapper = new QueryWrapper<>();
+        wrapper.eq("stage", stage);
+        wrapper.eq("grade", grade);
+        wrapper.eq("academy", academy);
+        wrapper.eq("major", major);
+        wrapper.orderByAsc("class_no");
+        List<Class> list = classService.list(wrapper);
+        Set<Integer> set = new HashSet<>();
+        for (Class aClass : list) {
+            set.add(aClass.getClassNo());
+        }
+        List<Integer> classNoList = new ArrayList<>(set);
+        return ServiceResult.createBySuccess(classNoList, classNoList.size());
     }
 }

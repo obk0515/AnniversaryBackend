@@ -28,10 +28,10 @@ public class AchievementController {
     @ApiOperation(value = "getByType")
     public ServiceResult<Achievement> getByType(@PathVariable String type) {
         List<Achievement> achievement = achievementService.getByType(type);
-        if(achievement==null){
+        if (achievement == null) {
             return ServiceResult.createByErrorMessage("没有找到该类型");
         }
-        return ServiceResult.createBySuccess(achievement,achievement.size());
+        return ServiceResult.createBySuccess(achievement, achievement.size());
     }
 
 }

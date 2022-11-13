@@ -1,9 +1,7 @@
 package com.fzu.controller;
 
 
-import com.alibaba.fastjson.JSON;
 import com.fzu.entity.User;
-import com.fzu.entity.UserClass;
 import com.fzu.mapper.UserMapper;
 import com.fzu.result.ServiceResult;
 import com.fzu.service.ClassService;
@@ -18,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
@@ -59,7 +55,7 @@ public class UserController {
     @GetMapping("/data/{id}")
     public ServiceResult<User> getById(@PathVariable String id) {
         //失败
-        if(userService.getById(id)==null){
+        if (userService.getById(id) == null) {
             return ServiceResult.createByErrorMessage("没有此用户");
         }
         return ServiceResult.createBySuccess(userService.getById(id));
@@ -68,13 +64,13 @@ public class UserController {
     //保存个人信息
     @PostMapping("/save")
     public ServiceResult<User> updateById(@RequestBody UserUpdateVO userUpdateVO) {
-        if (userService.getById(userUpdateVO.getId())==null){
+        if (userService.getById(userUpdateVO.getId()) == null) {
             return ServiceResult.createByErrorMessage("没有此用户");
         }
         //获取与之对应的用户信息
         User user = new User();
         //直接复制数据
-        BeanUtils.copyProperties(userUpdateVO,user);
+        BeanUtils.copyProperties(userUpdateVO, user);
         //修改user表对应信息
         if (!userService.updateById(user)) {
             return ServiceResult.createByErrorMessage("修改失败");
