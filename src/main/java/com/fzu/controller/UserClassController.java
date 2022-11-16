@@ -69,6 +69,12 @@ public class UserClassController {
             log.info("未查询到班级");
             return ServiceResult.createByErrorMessage("未查询到班级");
         }
+        LambdaQueryWrapper<UserClass> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(UserClass::getCid, cclass.getCid());
+        queryWrapper.eq(UserClass::getUid, userClassVO.getUid());
+        if (!userClassService.list(queryWrapper).isEmpty()) {
+            return ServiceResult.createByErrorMessage("该学号已存在于该班级");
+        }
         //在学生-班级表存储
         userClass.setUid(userClassVO.getUid());
         userClass.setSid(userClassVO.getSid());
@@ -89,7 +95,12 @@ public class UserClassController {
         LambdaQueryWrapper<UserClass> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserClass::getCid, userClassVO.getCid());
         queryWrapper.eq(UserClass::getUid, userClassVO.getUid());
-        userClassService.remove(queryWrapper);
+        if (userClassService.getOne(queryWrapper)==null) {
+            return ServiceResult.createByErrorMessage("无数据");
+        }
+        if (!userClassService.remove(queryWrapper)) {
+            return ServiceResult.createByErrorMessage("删除失败");
+        }
         return ServiceResult.createBySuccessMessage("删除成功");
     }
 
