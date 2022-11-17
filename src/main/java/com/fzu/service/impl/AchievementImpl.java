@@ -17,6 +17,7 @@ public class AchievementImpl extends ServiceImpl<AchievementMapper, Achievement>
     @Autowired
     private AchievementMapper achievementMapper;
 
+    //根据类型获取
     @Override
     public List<Achievement> getByType(String type) {
         QueryWrapper<Achievement> wrapper = new QueryWrapper<>();

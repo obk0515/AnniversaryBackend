@@ -12,5 +12,5 @@ public class Achievement {
     private String type;
     private String title;
     private String description;
-    private Date time;
+    private String rank;
 }
