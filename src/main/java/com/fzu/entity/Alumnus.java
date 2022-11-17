@@ -12,4 +12,5 @@ public class Alumnus {
     private String name;
     private String brief;
     private String photo;
+    private String position;
 }

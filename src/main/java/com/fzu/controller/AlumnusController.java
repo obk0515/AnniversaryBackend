@@ -17,7 +17,7 @@ public class AlumnusController {
 
     //获取全部校友信息
     @GetMapping
-    public ServiceResult getAll() {
+    public ServiceResult<Alumnus> getAll() {
         return ServiceResult.createBySuccessList(alumnusService.list());
     }
 
