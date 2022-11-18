@@ -41,7 +41,8 @@ public class UserController {
             return ServiceResult.createByErrorMessage(String.valueOf(bindingResult.getFieldErrors()));
         }
         if (userService.getByOpenId(userAddVO.getOpenId()) != null) {
-            return ServiceResult.createByErrorMessage("已存在微信绑定用户");
+            User user = userService.getByOpenId(userAddVO.getOpenId());
+            return ServiceResult.createBySuccess(user);
         }
         User user = new User();
         BeanUtils.copyProperties(userAddVO, user);
