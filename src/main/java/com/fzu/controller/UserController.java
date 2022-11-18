@@ -1,6 +1,7 @@
 package com.fzu.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fzu.entity.User;
 import com.fzu.mapper.UserMapper;
 import com.fzu.result.ServiceResult;
@@ -48,6 +49,9 @@ public class UserController {
         if (!userService.save(user)) {
             return ServiceResult.createByErrorMessage("创建失败");
         }
+        QueryWrapper<User> wrapper=new QueryWrapper<>();
+        wrapper.eq("open_id",userAddVO.getOpenId());
+        user=userService.getOne(wrapper);
         return ServiceResult.createBySuccess(user);
     }
 
