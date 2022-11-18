@@ -126,6 +126,7 @@ public class UserClassController {
     public ServiceResult<User> queryClassmate(@RequestBody @ApiParam(value = "UserClassPageVO") UserClassPageVO pageVO) {
         Page<User> page = new Page<>(pageVO.getPageNo(), pageVO.getPageSize());
         Page<User> returnPage = userClassService.findPage(page, pageVO);
+        log.info(returnPage.toString());
         return ServiceResult.createBySuccess(returnPage.getList(), Math.toIntExact(returnPage.getCount()));
     }
 

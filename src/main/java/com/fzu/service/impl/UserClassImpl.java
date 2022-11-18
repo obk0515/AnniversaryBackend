@@ -10,6 +10,7 @@ import com.fzu.service.UserClassService;
 import com.fzu.service.UserService;
 import com.fzu.utils.Page;
 import com.fzu.vo.UserClassPageVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserClassImpl extends ServiceImpl<UserClassMapper, UserClass> implements UserClassService {
 
     @Autowired
@@ -50,19 +52,21 @@ public class UserClassImpl extends ServiceImpl<UserClassMapper, UserClass> imple
 
         LambdaQueryWrapper<User> userQueryWrapper = new LambdaQueryWrapper<>();
         userQueryWrapper.in(User::getId, userIdList);
-
         //执行查询
         List<User> userslist = userService.list(userQueryWrapper);
-
+        log.info(userslist.toString());
         page.setCount(userslist.size()); //设置页面总数
         page.setPageSize(pageVO.getPageSize());//第几页
+
         long firstResult = (long) (page.getPageNo() - 1) * page.getPageSize();
         if (firstResult >= page.getCount()) {
             return page; //返回一个空page;
         }
         page.setPageNo(page.getFirstResult());
         userslist = userslist.stream().skip(firstResult).limit(pageVO.getPageSize()).collect(Collectors.toList());
+
         page.setList(userslist);
+
         return page;
     }
 }

@@ -1,7 +1,6 @@
 package com.fzu.controller;
 
 import com.fzu.entity.Achievement;
-import com.fzu.result.ServiceResult;
 import com.fzu.service.AchievementService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.fzu.result.ServiceResult;
 
 import java.util.List;
 
