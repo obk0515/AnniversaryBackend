@@ -16,13 +16,6 @@ import java.util.stream.Collectors;
 @Service
 public class BackgroundServiceImpl extends ServiceImpl<BackgroundMapper, Background> implements BackgroundService {
     @Override
-    public Background getByName(String name) {
-        QueryWrapper<Background> wrapper = new QueryWrapper<>();
-        wrapper.eq("name", name);
-        return this.getOne(wrapper);
-    }
-
-    @Override
     public Page<Background> findPage(Page<Background> page, BackgroundPageVO pageVO) {
         List<Background> list = this.list();
         //设置总数

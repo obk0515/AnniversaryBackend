@@ -20,9 +20,9 @@ public class BackgroundController {
 
     @ApiOperation(value = "获取指定虚拟背景")
     @GetMapping("/select")
-    @ApiImplicitParam(paramType="query", name = "name", value = "地点（例如：西门）", required = true, dataType = "String")
-    public ServiceResult<Background> getByName(@RequestParam String name) {
-        Background background = backgroundService.getByName(name);
+    @ApiImplicitParam(paramType="query", name = "id", value = "id（例如：1587852585767624705）", required = true, dataType = "String")
+    public ServiceResult<Background> getById(@RequestParam String id) {
+        Background background = backgroundService.getById(id);
         if(background == null) {
             return ServiceResult.createByErrorMessage("获取失败");
         }
