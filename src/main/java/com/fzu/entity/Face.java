@@ -19,7 +19,7 @@ public class Face {
 
     public static String face(AipBodyAnalysis client, MultipartFile faceFile) {
         //传入可选参数调入接口
-        HashMap<String, String> options = new HashMap<String, String>();
+        HashMap<String, String> options = new HashMap<>(1);
         options.put("type", "foreground");
         //参数为本地路径
         byte[] image = new byte[0];
@@ -35,12 +35,7 @@ public class Face {
 
     public String cutFace(MultipartFile faceFile) {
         AipBodyAnalysis client = new AipBodyAnalysis(Face.APP_ID, Face.API_KEY, Face.SECRET_KEY);
-//        String sam = Face.Face(c);
-//        System.out.println(sam);
-//        Img2Base64Util img2Base64Util = new Img2Base64Util();
-//        img2Base64Util.generateImage(sam, "C:\\Users\\何帆\\IdeaProjects\\SpringBoot\\ruangong\\src\\main\\java\\com\\fzu\\face\\image\\2.png");
-        String cutResult = Face.face(client,faceFile);
-        return cutResult;
+        return Face.face(client,faceFile);
     }
 
 }

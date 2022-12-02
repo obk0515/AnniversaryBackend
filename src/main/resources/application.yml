@@ -1,7 +1,11 @@
 server:
-  port: 8082
+  port: 8081
   address: 0.0.0.0
-
+  ssl:
+    key-store: classpath:prxdong.top.jks
+    key-store-password: pehs753312
+    key-store-type: JKS
+    enabled: true
 spring:
   datasource:
     druid:

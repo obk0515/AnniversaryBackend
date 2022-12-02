@@ -1,6 +1,7 @@
 package com.fzu.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fzu.entity.User;
 import com.fzu.mapper.UserMapper;
@@ -12,11 +13,21 @@ import com.fzu.vo.UserAddVO;
 import com.fzu.vo.UserUpdateVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -25,13 +36,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    //关联数据  cid
-    @Autowired
-    private ClassService classService;
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private UserClassService userClassService;
+
+    @Value("${wechat.AppID}")
+    private String appId;
+
+    @Value("${wechat.AppSecret}")
+    private String appSecret;
 
     @ApiOperation(value = "初始创建")
     @PostMapping("/add")
@@ -83,4 +93,34 @@ public class UserController {
         return ServiceResult.createBySuccess(user);
     }
 
+
+    @PostMapping("/getMessage")
+    public ServiceResult<List<String>> getMessage() {
+        List<String> list=new ArrayList<>(2);
+        list.add(appId);
+        list.add(appSecret);
+        return ServiceResult.createBySuccess(list);
+    }
+
+    @GetMapping("/getOpenId/{code}")
+    public JSONObject getOpenId(@PathVariable String code){
+        String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appId + "&secret=" + appSecret + "&js_code=" + code + "&grant_type=authorization_code";
+        JSONObject jsonObject = null;
+        try {
+            //构建一个Client
+            HttpClient client = HttpClientBuilder.create().build();
+            //构建一个GET请求
+            HttpGet get = new HttpGet(url);
+            //提交GET请求
+            HttpResponse response = client.execute(get);
+            //拿到返回的HttpResponse的"实体"
+            HttpEntity result = response.getEntity();
+            String content = EntityUtils.toString(result);
+            //把信息封装为json
+            jsonObject = JSONObject.parseObject(content);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
 }
