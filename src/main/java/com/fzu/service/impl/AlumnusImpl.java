@@ -20,7 +20,7 @@ public class AlumnusImpl extends com.baomidou.mybatisplus.extension.service.impl
         return this.getOne(wrapper);
     }
 
-    //重构，通过名字得来的Alumnus来查询校友数据
+    //重构，通过ID得来的Alumnus来查询校友数据
     @Override
     public List<Alumnus> list(Alumnus alumnus) {
         return list(Wrappers.lambdaQuery(alumnus));

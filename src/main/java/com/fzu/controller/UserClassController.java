@@ -72,8 +72,9 @@ public class UserClassController {
         LambdaQueryWrapper<UserClass> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserClass::getCid, cclass.getCid());
         queryWrapper.eq(UserClass::getUid, userClassVO.getUid());
+        System.out.println(userClassService.list(queryWrapper));
         if (!userClassService.list(queryWrapper).isEmpty()) {
-            return ServiceResult.createByErrorMessage("该学号已存在于该班级");
+            return ServiceResult.createByErrorMessage("用户已存在于该班级");
         }
         //在学生-班级表存储
         userClass.setUid(userClassVO.getUid());
@@ -104,11 +105,28 @@ public class UserClassController {
         return ServiceResult.createBySuccessMessage("删除成功");
     }
 
+    @ApiOperation("查看班级")
+    @PostMapping("/getClassById/{id}")
+    public ServiceResult<Class> getClassById(@PathVariable String id) {
+        QueryWrapper<UserClass> wrapper=new QueryWrapper<>();
+        wrapper.eq("uid",id);
+        if (userClassService.list(wrapper).isEmpty()){
+            return ServiceResult.createByErrorMessage("尚未加入班级");
+        }
+        List<UserClass> list = userClassService.list(wrapper);
+        List<Class> classList=new ArrayList<>();
+        for (UserClass userClass : list) {
+            classList.add(classService.getByCid(userClass.getCid()));
+        }
+        return ServiceResult.createBySuccess(classList,classList.size());
+    }
+
     @ApiOperation(value = "查看同学")
     @PostMapping("/page")
     public ServiceResult<User> queryClassmate(@RequestBody @ApiParam(value = "UserClassPageVO") UserClassPageVO pageVO) {
         Page<User> page = new Page<>(pageVO.getPageNo(), pageVO.getPageSize());
         Page<User> returnPage = userClassService.findPage(page, pageVO);
+        log.info(returnPage.toString());
         return ServiceResult.createBySuccess(returnPage.getList(), Math.toIntExact(returnPage.getCount()));
     }
 
